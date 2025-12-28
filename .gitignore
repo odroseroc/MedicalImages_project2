@@ -1,4 +1,5 @@
 data/raw
 data/segmentations
 data/slicer
+data/linear_registrations
 notebooks/no_include
