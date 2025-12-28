@@ -88,16 +88,37 @@ def show_coronal_overlay(fix_arr, mov_arr, slc):
     plt.title(f'Coronal slice {slc}')
     plt.show()
 
+
+def show_axial_overlay(fix_arr, mov_arr, slc):
+    plt.figure(figsize=(5, 5))
+
+    plt.imshow(np.flip(fix_arr[slc, :, :], 0), cmap='Reds')
+    plt.imshow(np.flip(mov_arr[slc, :, :], 0), cmap='Blues', alpha=0.3)
+
+    plt.axis('off')
+    plt.title(f'Axial slice {slc}')
+    plt.show()
+
+def show_sagital_overlay(fix_arr, mov_arr, slc):
+    plt.figure(figsize=(5, 5))
+
+    plt.imshow(np.flip(fix_arr[:, :, slc], 0), cmap='Reds')
+    plt.imshow(np.flip(mov_arr[:, :, slc], 0), cmap='Blues', alpha=0.3)
+
+    plt.axis('off')
+    plt.title(f'Sagital slice {slc}')
+    plt.show()
+
 def show_interactive_overlay(fix_arr, mov_arr, plane: str):
     match plane:
         case 'axial':
-            fn = show_coronal_overlay
+            fn = show_axial_overlay()
             ax = 0
         case 'coronal':
             fn = show_coronal_overlay
             ax = 1
         case 'sagital':
-            fn = show_coronal_overlay
+            fn = show_sagital_overlay
             ax = 2
         case _:
             raise ValueError(f"Plane {plane} not recognized")
@@ -109,6 +130,8 @@ def show_interactive_overlay(fix_arr, mov_arr, plane: str):
             step=1,
             value=fix_arr.shape[ax] // 2
         ),
-        fixed_img=fixed(fix_arr),
-        moving_img=fixed(mov_arr)
+        fix_arr=fixed(fix_arr),
+        mov_arr=fixed(mov_arr)
     )
+
+
