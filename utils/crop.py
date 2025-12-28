@@ -108,3 +108,25 @@ def crop_lateral(img, side='r', pad=10):
             raise ValueError(f"Only \'r\' and \'l\' are acceptable sides.")
     roi_img = sitk.RegionOfInterest(img, size, start)
     return roi_img
+
+def downsample(img, factor):
+    """
+    Downsample a SimpleITK image by a given factor.
+    Preserves physical space (origin, direction).
+    Works correctly even if img was cropped with RegionOfInterest.
+    """
+
+    in_spacing = img.GetSpacing()
+    in_size = img.GetSize()
+
+    out_spacing = [s * factor for s in in_spacing]
+    out_size = [int(round(sz / factor)) for sz in in_size]
+
+    resampler = sitk.ResampleImageFilter()
+    resampler.SetReferenceImage(img)
+    resampler.SetOutputSpacing(out_spacing)
+    resampler.SetSize(out_size)
+    resampler.SetInterpolator(sitk.sitkLinear)
+    resampler.SetTransform(sitk.Transform())  # identidad
+
+    return resampler.Execute(img)

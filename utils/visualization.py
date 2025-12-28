@@ -112,7 +112,7 @@ def show_sagital_overlay(fix_arr, mov_arr, slc):
 def show_interactive_overlay(fix_arr, mov_arr, plane: str):
     match plane:
         case 'axial':
-            fn = show_axial_overlay()
+            fn = show_axial_overlay
             ax = 0
         case 'coronal':
             fn = show_coronal_overlay

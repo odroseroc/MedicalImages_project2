@@ -1,6 +1,6 @@
 import SimpleITK as sitk
 
-def est_lin_transf(im_ref, im_mov, mask_ref=None, mask_mov=None):
+def est_lin_transf(im_ref, im_mov, mask_ref=None, mask_mov=None, verbose=False):
     """
     Estimate affine transform to align im_mov to im_ref.
     Optionally uses masks to focus registration on bone.
@@ -41,11 +41,12 @@ def est_lin_transf(im_ref, im_mov, mask_ref=None, mask_mov=None):
     # --- Execute ---
     final_transform = reg.Execute(sitk.Cast(im_ref, sitk.sitkFloat32),
                                   sitk.Cast(im_mov, sitk.sitkFloat32))
-    print(final_transform)
-    print("--------")
-    print("Optimizer stop condition: {0}".format(reg.GetOptimizerStopConditionDescription()))
-    print("Number of iterations: {0}".format(reg.GetOptimizerIteration()))
-    print("--------")
+    if verbose:
+        print(final_transform)
+        print("--------")
+        print("Optimizer stop condition: {0}".format(reg.GetOptimizerStopConditionDescription()))
+        print("Number of iterations: {0}".format(reg.GetOptimizerIteration()))
+        print("--------")
 
     return final_transform
 
